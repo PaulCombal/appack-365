@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=MS365 RDP session
+Exec=$APPACK_LAUNCH_CMD
+Terminal=false
+Type=Application
+Icon=$ICON_FULL_PATH
+Comment=Enter the full desktop
+Categories=Settings;
+StartupWMClass=windows;

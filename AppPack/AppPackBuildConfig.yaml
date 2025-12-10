@@ -1,0 +1,67 @@
+name: MS365
+id: ms-365
+version: 0.1.0
+description: The complete Microsoft 365 suite
+image: image.qcow2
+snapshot: OnClose
+readme:
+  folder: readme
+  index: README.md
+desktop_entries:
+  - entry: desktop/excel.desktop
+    icon: desktop/excel.svg
+    rdp_args: /app:program:C:\\excel.vbs,cmd:"$TO_WIN_ESCAPED_PATH**%f**" /drive:home,$HOME
+  - entry: desktop/msaccess.desktop
+    icon: desktop/msaccess.svg
+    rdp_args: /app:program:C:\\msaccess.vbs,cmd:"$TO_WIN_ESCAPED_PATH**%f**" /drive:home,$HOME
+  - entry: desktop/mspub.desktop
+    icon: desktop/mspub.svg
+    rdp_args: /app:program:C:\\mspub.vbs,cmd:"$TO_WIN_ESCAPED_PATH**%f**" /drive:home,$HOME
+  - entry: desktop/onenote.desktop
+    icon: desktop/onenote.svg
+    rdp_args: /app:program:C:\\onenote.vbs,cmd:"$TO_WIN_ESCAPED_PATH**%f**" /drive:home,$HOME
+  - entry: desktop/outlook.desktop
+    icon: desktop/outlook.svg
+    rdp_args: /app:program:C:\\outlook.vbs,cmd:"$TO_WIN_ESCAPED_PATH**%f**" /drive:home,$HOME
+  - entry: desktop/powerpnt.desktop
+    icon: desktop/powerpnt.svg
+    rdp_args: /app:program:C:\\powerpnt.vbs,cmd:"$TO_WIN_ESCAPED_PATH**%f**" /drive:home,$HOME
+  - entry: desktop/setlang.desktop
+    icon: desktop/setlang.png
+    rdp_args: /app:program:C:\\setlang.vbs,cmd:"$TO_WIN_ESCAPED_PATH**%f**" /drive:home,$HOME
+  - entry: desktop/winword.desktop
+    icon: desktop/winword.svg
+    rdp_args: /app:program:C:\\winword.vbs,cmd:"$TO_WIN_ESCAPED_PATH**%f**" /drive:home,$HOME
+  - entry: desktop/plain-rdp.desktop
+    icon: desktop/plain-rdp.png
+    rdp_args: /drive:home,$HOME
+base_command: >-
+  -enable-kvm
+  -cpu host,migratable=on,hv-time=on,hv-relaxed=on,hv-vapic=on,hv-spinlocks=0x1fff
+  -smp 2,cores=2,threads=1
+  -m 4G
+  -machine pc-q35-10.1,accel=kvm
+  -rtc base=localtime,driftfix=slew
+  -drive file=$IMAGE_FILE_PATH,if=virtio,format=qcow2,id=disk0
+  -device virtio-net-pci,netdev=hostnet0
+  -device virtio-balloon-pci
+  -usb -device usb-tablet
+  -vga virtio
+install_append: >-
+  -netdev user,id=hostnet0
+  -display sdl,gl=on
+  -drive file=installer.iso,media=cdrom
+  -drive file=guest-addons.iso,media=cdrom
+configure_append: >-
+  -netdev user,id=hostnet0,hostfwd=tcp::$RDP_PORT-:3389,hostfwd=udp::$RDP_PORT-:3389
+  -display egl-headless,gl=on
+  -qmp unix:qmp-appack.sock,server=on,wait=off
+configure_freerdp: >-
+  /v:localhost:$RDP_PORT
+  /u:ms365
+  /p:ms365
+  /cert:ignore
+  +clipboard
+  +auto-reconnect
+  +menu-anims
+  +window-drag
