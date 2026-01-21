@@ -11,6 +11,10 @@ Some files are not included in this repository, for technical and legal reasons:
 * The main OS image (image.qcow2)
 * The installation medium (installer.iso)
 
+### Installation video
+
+[![Watch the video](https://img.youtube.com/vi/y82anWaxTxM/0.jpg)](https://www.youtube.com/watch?v=y82anWaxTxM)
+
 ### License
 
 All the files that are not icons in this repository are subject to the GNU GPLv3 license. 
